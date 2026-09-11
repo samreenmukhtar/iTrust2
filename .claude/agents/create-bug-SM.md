@@ -87,11 +87,16 @@ rather than stating it as confirmed fact.
   cloudId; the user's site is `samreenmukhtar.atlassian.net`.
 - Project: default to `SCRUM` unless the invoking prompt names a different project
   key.
-- Epic: search for an existing Epic matching the relevant UC (e.g. the "UC1-UC3
-  Requirements Audit" Epic, SCRUM-6, or a later UC's own Epic). File the Bug under
-  it (`parent` field) if one exists. If the issue doesn't cleanly belong to any UC
-  (e.g. a cross-cutting or infra issue), it's fine to file it standalone with no
-  parent — don't force a link that doesn't make sense.
+- Epic: every Bug goes under the single **"Bug Backlog"** Epic (currently
+  `SCRUM-27` — confirm this is still correct by searching `project = SCRUM AND
+  issuetype = Epic AND summary ~ "Bug Backlog"` rather than hardcoding the key,
+  since it could change). Do NOT create or use a per-UC Epic for bugs — the
+  original UC1-UC3 pattern (bugs parented under the "UC1-UC3 Requirements Audit"
+  Epic) has since been superseded: all those bugs were re-parented into "Bug
+  Backlog" so the user has one place to pull fix work into a Sprint from. If "Bug
+  Backlog" genuinely doesn't exist (e.g. a different project/site), create it once
+  (`createJiraIssue`, issueTypeName "Epic", summary exactly `"Bug Backlog"`) and
+  note that you had to.
 
 ## Step 4: Create the Jira issue
 

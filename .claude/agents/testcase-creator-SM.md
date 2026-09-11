@@ -96,13 +96,17 @@ TC-UC4-06) — check both `docs/manual-test-cases-*.md` and existing Jira issues
   cloudId; the user's site is `samreenmukhtar.atlassian.net`.
 - Project: default to `SCRUM` unless the invoking prompt names a different project
   key.
-- Epic: search for an existing Epic whose summary matches the target UC(s) (e.g.
-  `searchJiraIssuesUsingJql` with something like `project = SCRUM AND issuetype =
-  Epic AND summary ~ "UC4"`). If one exists (e.g. the "UC1-UC3 Requirements Audit"
-  Epic, or a later one for other UCs), file new test cases under it. If genuinely
-  none exists for this UC yet, create one first (`createJiraIssue`, issueTypeName
-  "Epic", a summary like `iTrust2: UC<N> Requirements Audit (Test Cases & Gaps)`),
-  then link everything under it.
+- Epic: all test cases, regardless of which UC they came from, go under the single
+  **"Test Cases Library"** Epic (currently `SCRUM-26` — confirm this is still
+  correct by searching `project = SCRUM AND issuetype = Epic AND summary ~ "Test
+  Cases Library"` rather than hardcoding the key, since it could change). Do NOT
+  create a new per-UC Epic — that was the original UC1-UC3 pattern
+  ("UC1-UC3 Requirements Audit", `SCRUM-6`) and has since been superseded: all its
+  test cases were re-parented into "Test Cases Library" so the user can pull
+  individual cases into whichever Sprint they belong to, rather than having them
+  siloed per-UC. If "Test Cases Library" genuinely doesn't exist (e.g. a different
+  project/site), create it once (`createJiraIssue`, issueTypeName "Epic", summary
+  exactly `"Test Cases Library"`) and note that you had to.
 - To avoid duplicate filing, before creating each test case, search Jira for an
   existing issue with the same TC ID in its summary and skip/report it instead of
   creating a duplicate.
@@ -110,18 +114,20 @@ TC-UC4-06) — check both `docs/manual-test-cases-*.md` and existing Jira issues
 ## Step 3: Create the Jira issues
 
 For each test case, call `createJiraIssue` with:
-- `issueTypeName`: `"Task"` (or `"Bug"` if the test case is a BLOCKED/gap case —
-  match the pattern already used: TC-UC1-06 and TC-UC2-08 were filed as Task test
-  cases, and each gap additionally got its own separate Bug ticket cross-referencing
-  the Task — replicate that: file the test case as a Task, and if it's a gap, ALSO
-  file a companion Bug with Severity/Where/Impact/Suggested fix, cross-linking the
-  Task's key in its description).
-- `parent`: the Epic's issue key.
+- `issueTypeName`: `"Task"`.
+- `parent`: the "Test Cases Library" Epic's issue key (Step 2).
 - `summary`: `"TC-UC<N>-<NN>: <short scenario title>"` (or `"TC-UC<N>-<NN>
   (BLOCKED): <short scenario title>"` for a gap case).
 - `description`: the exact structured block from Step 1, `contentFormat: "markdown"`.
-- For a Bug companion ticket, set `additional_fields: {"priority": {"name":
-  "High"|"Medium"|"Low"}}` matching the severity.
+
+If the test case is a BLOCKED/gap case (the underlying feature is a 0% code gap, or
+there's a real code/doc deviation), ALSO file a companion Bug — matching the pattern
+already used for TC-UC1-06/TC-UC1-05/TC-UC1-01 etc. (Severity/Where/Impact/Suggested
+fix format) — but parent it under the **"Bug Backlog"** Epic (`SCRUM-27`, confirm via
+`searchJiraIssuesUsingJql` the same way as Step 2, don't hardcode), NOT under "Test
+Cases Library" — bugs and test cases live in separate buckets now. Cross-reference
+the Task's key in the Bug's description, and set `additional_fields:
+{"priority": {"name": "High"|"Medium"|"Low"}}` matching the severity.
 
 ## Step 4: Keep the repo in sync
 
