@@ -1,0 +1,3 @@
+- [UC audit naming](feedback_uc_audit_naming.md) — when asked "what are my UC/audit/test-case/bug skills", answer: uc-audit-SM (skill+agent), testcase-creator-SM (agent), create-bug-SM (agent)
+- [iTrust2 Jira (SCRUM)](reference_itrust2_jira.md) — backlog board + SCRUM-20/21 UC2 session-timeout test & bug to keep tabs on
+- [iTrust2 local run setup](project_itrust2_local_run.md) — portable JDK/MariaDB, pom fix, launcher, logins, which branches hold what
