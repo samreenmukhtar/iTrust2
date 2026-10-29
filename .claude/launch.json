@@ -1,0 +1,12 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "itrust2",
+      "runtimeExecutable": "cmd",
+      "runtimeArgs": ["/c", ".claude\\run-itrust2.cmd"],
+      "port": 8080,
+      "url": "http://localhost:8080"
+    }
+  ]
+}
